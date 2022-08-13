@@ -1,6 +1,7 @@
 package main;
 
 import main.entity.Player;
+import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,23 +11,20 @@ import java.awt.*;
  */
 public class GamePanel extends JPanel implements Runnable {
     // SCREEN SETTINGS
-    final int ORIGINAL_TILE_SIZE = 16; // 16x16 tile
-    final int SCALE = 3;
+    public final int ORIGINAL_TILE_SIZE = 16; // 16x16 tile
+    public final int SCALE = 3;
     public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // 48x48 tile
-    final int MAX_SCREEN_COL = 16; // 16 tiles horizontally
-    final int MAX_SCREEN_ROW = 12; // 12 tiles vertically
-    final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
-    final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
-    final int FPS = 60; // 60 frames per second
+    public final int MAX_SCREEN_COL = 16; // 16 tiles horizontally
+    public final int MAX_SCREEN_ROW = 12; // 12 tiles vertically
+    public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
+    public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
+    public final int FPS = 60; // 60 frames per second
 
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
+    TileManager tileManager = new TileManager(this);
 
     Player player = new Player(this, keyHandler);
-
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4;
 
     /**
      * The GamePanel class manages all core game logic
@@ -92,6 +90,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D)g;
 
+        tileManager.draw(g2);
         player.draw(g2);
 
         g2.dispose();
