@@ -98,14 +98,22 @@ public class Player extends Entity {
             case "key" -> {
                 keyCount++;
                 System.out.println("Key Count: " + keyCount);
+                gamePanel.playSoundEffect("coin");
+
                 gamePanel.objects[objectIndex] = null;
             }
             case "door" -> {
                 if (keyCount > 0) {
                     gamePanel.objects[objectIndex] = null;
                     keyCount--;
+                    gamePanel.playSoundEffect("unlock");
                 }
                 System.out.println("Key Count: " + keyCount);
+            }
+            case "boots" -> {
+                speed += 2;
+                gamePanel.playSoundEffect("powerup");
+                gamePanel.objects[objectIndex] = null;
             }
         }
     }

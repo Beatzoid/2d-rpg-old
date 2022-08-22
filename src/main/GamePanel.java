@@ -12,7 +12,7 @@ import java.awt.*;
  * Main game logic
  */
 public class GamePanel extends JPanel implements Runnable {
-    // SCREEN SETTINGS
+    // Screen Settings
     public final int ORIGINAL_TILE_SIZE = 16; // 16x16 tile
     public final int SCALE = 3;
     public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // 48x48 tile
@@ -21,16 +21,22 @@ public class GamePanel extends JPanel implements Runnable {
     public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
     public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
     public final int FPS = 60; // 60 frames per second
+
+    // World Settings
     public final int MAX_WORLD_COL = 50;
     public final int MAX_WORLD_ROW = 50;
     public final int WORLD_WIDTH = TILE_SIZE * MAX_WORLD_COL;
     public final int WORLD_HEIGHT = TILE_SIZE * MAX_WORLD_ROW;
 
+    // System
     public CollisionChecker collisionChecker;
     public Player player;
     public TileManager tileManager;
     public KeyHandler keyHandler;
     public Thread gameThread;
+    public SoundManager soundManager;
+
+    // Entities and objects
     public GameObject[] objects;
     public ObjectManager objectManager;
 
@@ -38,6 +44,7 @@ public class GamePanel extends JPanel implements Runnable {
      * The GamePanel class manages all core game logic
      */
     public GamePanel() {
+        soundManager = new SoundManager();
         collisionChecker = new CollisionChecker(this);
         keyHandler = new KeyHandler();
         tileManager = new TileManager(this);
@@ -54,6 +61,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void setup() {
         this.objectManager.setObject();
+
+        playMusic("main_theme");
     }
 
     /**
@@ -120,6 +129,21 @@ public class GamePanel extends JPanel implements Runnable {
         player.draw(g2);
 
         g2.dispose();
+    }
+
+    public void playMusic(String fileName) {
+        soundManager.setActiveFile(fileName);
+        soundManager.play();
+        soundManager.loop();
+    }
+
+    public void playSoundEffect(String fileName) {
+        soundManager.setActiveFile(fileName);
+        soundManager.play();
+    }
+
+    public void stopMusic() {
+        soundManager.stop();
     }
 }
 
