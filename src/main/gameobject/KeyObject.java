@@ -1,18 +1,18 @@
-package main.object;
+package main.gameobject;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
-public class ChestObject extends SuperObject {
-    public ChestObject() {
-        this.name = "Chest";
+public class KeyObject extends GameObject {
+    public KeyObject() {
+        this.name = "Key";
 
         loadImage();
     }
 
     private void loadImage() {
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/objects/chest.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/objects/key.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

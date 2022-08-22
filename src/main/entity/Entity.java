@@ -16,5 +16,6 @@ public class Entity {
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public Rectangle hitbox;
+    public int hitboxDefaultX, hitboxDefaultY;
     public boolean hasCollided = false;
 }

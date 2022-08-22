@@ -1,7 +1,6 @@
-package main.object;
+package main.gameobject;
 
 import main.GamePanel;
-import main.object.KeyObject;
 
 public class ObjectManager {
     GamePanel gamePanel;

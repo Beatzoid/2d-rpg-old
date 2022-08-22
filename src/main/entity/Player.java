@@ -2,6 +2,7 @@ package main.entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.gameobject.GameObject;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,6 +20,11 @@ public class Player extends Entity {
     KeyHandler keyHandler;
 
     /**
+     * How many keys the player currently has
+     */
+    int keyCount = 0;
+
+    /**
      * The Player class manages all player-related logic
      * @param gamePanel The game panel
      * @param keyHandler The key handler
@@ -33,6 +39,8 @@ public class Player extends Entity {
         hitbox = new Rectangle();
         hitbox.x = 8;
         hitbox.y = 16;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
         hitbox.width = 32;
         hitbox.height = 32;
 
@@ -53,8 +61,13 @@ public class Player extends Entity {
                 direction = "right";
             }
 
+            // Check tile collision
             hasCollided = false;
             gamePanel.collisionChecker.checkTile(this);
+
+            // Check object collision
+            int objectIndex = gamePanel.collisionChecker.checkObject(this,true);
+            pickupObject(objectIndex);
 
             if (!hasCollided) {
                 switch (direction) {
@@ -72,6 +85,27 @@ public class Player extends Entity {
                 else if (spriteNum == 2) spriteNum = 1;
 
                 spriteCounter = 0;
+            }
+        }
+    }
+
+    public void pickupObject(int objectIndex) {
+        if (objectIndex == -1) return;
+
+        String objectName = gamePanel.objects[objectIndex].name;
+
+        switch (objectName.toLowerCase()) {
+            case "key" -> {
+                keyCount++;
+                System.out.println("Key Count: " + keyCount);
+                gamePanel.objects[objectIndex] = null;
+            }
+            case "door" -> {
+                if (keyCount > 0) {
+                    gamePanel.objects[objectIndex] = null;
+                    keyCount--;
+                }
+                System.out.println("Key Count: " + keyCount);
             }
         }
     }

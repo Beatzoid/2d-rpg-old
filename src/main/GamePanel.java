@@ -1,8 +1,8 @@
 package main;
 
 import main.entity.Player;
-import main.object.ObjectManager;
-import main.object.SuperObject;
+import main.gameobject.ObjectManager;
+import main.gameobject.GameObject;
 import main.tiles.TileManager;
 
 import javax.swing.*;
@@ -31,7 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tileManager;
     public KeyHandler keyHandler;
     public Thread gameThread;
-    public SuperObject[] objects;
+    public GameObject[] objects;
     public ObjectManager objectManager;
 
     /**
@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements Runnable {
         collisionChecker = new CollisionChecker(this);
         keyHandler = new KeyHandler();
         tileManager = new TileManager(this);
-        objects = new SuperObject[10];
+        objects = new GameObject[10];
         objectManager = new ObjectManager(this);
         player = new Player(this, keyHandler);
 
@@ -111,7 +111,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         tileManager.draw(g2);
 
-        for (SuperObject obj : objects) {
+        for (GameObject obj : objects) {
             if (obj != null) {
                 obj.draw(g2, this);
             }
