@@ -19,6 +19,10 @@ public class Player extends Entity {
     GamePanel gamePanel;
     KeyHandler keyHandler;
 
+    int standCounter;
+    boolean moving = false;
+    int pixelCounter;
+
     /**
      * How many keys the player currently has
      */
@@ -37,38 +41,67 @@ public class Player extends Entity {
         screenY = gamePanel.SCREEN_HEIGHT / 2 - (gamePanel.TILE_SIZE / 2);
 
         hitbox = new Rectangle();
-        hitbox.x = 8;
-        hitbox.y = 16;
+        hitbox.x = 1;
+        hitbox.y = 1;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        hitbox.width = 32;
-        hitbox.height = 32;
+        hitbox.width = 46;
+        hitbox.height = 46;
 
         setDefaultValues();
         getPlayerImage();
     }
 
     public void update() {
-        if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
+        if (!moving) {
+            if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
 
-            if (keyHandler.upPressed) {
-                direction = "up";
-            } else if (keyHandler.downPressed) {
-                direction = "down";
-            } else if (keyHandler.leftPressed) {
-                direction = "left";
-            } else if (keyHandler.rightPressed) {
-                direction = "right";
+                if (keyHandler.upPressed) {
+                    direction = "up";
+                } else if (keyHandler.downPressed) {
+                    direction = "down";
+                } else if (keyHandler.leftPressed) {
+                    direction = "left";
+                } else if (keyHandler.rightPressed) {
+                    direction = "right";
+                }
+
+                moving = true;
+
+                // Check tile collision
+                hasCollided = false;
+                gamePanel.collisionChecker.checkTile(this);
+
+                // Check object collision
+                int objectIndex = gamePanel.collisionChecker.checkObject(this,true);
+                interactWithObject(objectIndex);
+
+                if (!hasCollided) {
+                    switch (direction) {
+                        case "up" -> worldY -= speed;
+                        case "down" -> worldY += speed;
+                        case "left" -> worldX -= speed;
+                        case "right" -> worldX += speed;
+                    }
+                }
+
+                spriteCounter++;
+                // Every 12 frames
+                if (spriteCounter > 12) {
+                    if (spriteNum == 1) spriteNum = 2;
+                    else if (spriteNum == 2) spriteNum = 1;
+
+                    spriteCounter = 0;
+                }
+            } else {
+                standCounter++;
+
+                if (spriteNum == 20) {
+                    standCounter = 0;
+                    spriteNum = 1;
+                }
             }
-
-            // Check tile collision
-            hasCollided = false;
-            gamePanel.collisionChecker.checkTile(this);
-
-            // Check object collision
-            int objectIndex = gamePanel.collisionChecker.checkObject(this,true);
-            interactWithObject(objectIndex);
-
+        } else {
             if (!hasCollided) {
                 switch (direction) {
                     case "up" -> worldY -= speed;
@@ -86,6 +119,13 @@ public class Player extends Entity {
 
                 spriteCounter = 0;
             }
+        }
+
+        pixelCounter += speed;
+
+        if (pixelCounter == gamePanel.TILE_SIZE) {
+            moving = false;
+            pixelCounter = 0;
         }
     }
 
@@ -163,6 +203,10 @@ public class Player extends Entity {
         }
 
         g2.drawImage(image, screenX, screenY, gamePanel.TILE_SIZE, gamePanel.TILE_SIZE, null);
+
+        // Display hitbox
+        // g2.setColor(Color.red);
+        // g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
     }
 
     public void getPlayerImage() {
