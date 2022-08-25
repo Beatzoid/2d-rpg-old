@@ -1,4 +1,4 @@
-package main;
+package main.sound;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class SoundManager {
     Clip clip;
-    Map<String, URL> soundURLs;
+    Map<Sounds, URL> soundURLs;
 
     public SoundManager() {
         soundURLs = new HashMap<>();
@@ -16,9 +16,9 @@ public class SoundManager {
         loadDefaultSounds();
     }
 
-    public void setActiveFile(String fileName) {
+    public void setActiveFile(Sounds soundName) {
         try {
-            AudioInputStream ais = AudioSystem.getAudioInputStream(soundURLs.get(fileName));
+            AudioInputStream ais = AudioSystem.getAudioInputStream(soundURLs.get(soundName));
             clip = AudioSystem.getClip();
             clip.open(ais);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
@@ -39,10 +39,10 @@ public class SoundManager {
     }
 
     private void loadDefaultSounds() {
-        soundURLs.put("main_theme", getClass().getResource("/sounds/BlueBoyAdventure.wav"));
-        soundURLs.put("coin", getClass().getResource("/sounds/coin.wav"));
-        soundURLs.put("powerup", getClass().getResource("/sounds/powerup.wav"));
-        soundURLs.put("unlock", getClass().getResource("/sounds/unlock.wav"));
-        soundURLs.put("fanfare", getClass().getResource("/sounds/fanfare.wav"));
+        soundURLs.put(Sounds.MAIN_THEME, getClass().getResource("/sounds/BlueBoyAdventure.wav"));
+        soundURLs.put(Sounds.COIN, getClass().getResource("/sounds/coin.wav"));
+        soundURLs.put(Sounds.POWERUP, getClass().getResource("/sounds/powerup.wav"));
+        soundURLs.put(Sounds.UNLOCK, getClass().getResource("/sounds/unlock.wav"));
+        soundURLs.put(Sounds.FANFARE, getClass().getResource("/sounds/fanfare.wav"));
     }
 }

@@ -3,7 +3,10 @@ package main;
 import main.entity.Player;
 import main.gameobject.ObjectManager;
 import main.gameobject.GameObject;
+import main.sound.SoundManager;
+import main.sound.Sounds;
 import main.tiles.TileManager;
+import main.ui.UI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +37,9 @@ public class GamePanel extends JPanel implements Runnable {
     public TileManager tileManager;
     public KeyHandler keyHandler;
     public Thread gameThread;
-    public SoundManager soundManager;
+    public SoundManager musicManager;
+    public SoundManager soundEffectsManager;
+    public UI ui;
 
     // Entities and objects
     public GameObject[] objects;
@@ -44,7 +49,9 @@ public class GamePanel extends JPanel implements Runnable {
      * The GamePanel class manages all core game logic
      */
     public GamePanel() {
-        soundManager = new SoundManager();
+        ui = new UI(this);
+        musicManager = new SoundManager();
+        soundEffectsManager = new SoundManager();
         collisionChecker = new CollisionChecker(this);
         keyHandler = new KeyHandler();
         tileManager = new TileManager(this);
@@ -62,7 +69,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void setup() {
         this.objectManager.setObject();
 
-        playMusic("main_theme");
+        playMusic(Sounds.MAIN_THEME);
     }
 
     /**
@@ -128,22 +135,24 @@ public class GamePanel extends JPanel implements Runnable {
 
         player.draw(g2);
 
+        ui.draw(g2);
+
         g2.dispose();
     }
 
-    public void playMusic(String fileName) {
-        soundManager.setActiveFile(fileName);
-        soundManager.play();
-        soundManager.loop();
+    public void playMusic(Sounds soundName) {
+        musicManager.setActiveFile(soundName);
+        musicManager.play();
+        musicManager.loop();
     }
 
-    public void playSoundEffect(String fileName) {
-        soundManager.setActiveFile(fileName);
-        soundManager.play();
+    public void playSoundEffect(Sounds soundName) {
+        soundEffectsManager.setActiveFile(soundName);
+        soundEffectsManager.play();
     }
 
     public void stopMusic() {
-        soundManager.stop();
+        musicManager.stop();
     }
 }
 

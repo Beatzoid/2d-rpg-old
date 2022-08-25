@@ -5,7 +5,8 @@ import java.io.IOException;
 
 public class ChestObject extends GameObject {
     public ChestObject() {
-        this.name = "Chest";
+        name = "Chest";
+        hasCollision = true;
 
         loadImage();
     }

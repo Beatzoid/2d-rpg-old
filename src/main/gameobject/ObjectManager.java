@@ -38,8 +38,8 @@ public class ObjectManager {
         gamePanel.objects[6].worldX = 10 * gamePanel.TILE_SIZE;
         gamePanel.objects[6].worldY = 7 * gamePanel.TILE_SIZE;
 
-        gamePanel.objects[6] = new BootsObject();
-        gamePanel.objects[6].worldX = 37 * gamePanel.TILE_SIZE;
-        gamePanel.objects[6].worldY = 42 * gamePanel.TILE_SIZE;
+        gamePanel.objects[7] = new BootsObject();
+        gamePanel.objects[7].worldX = 37 * gamePanel.TILE_SIZE;
+        gamePanel.objects[7].worldY = 42 * gamePanel.TILE_SIZE;
     }
 }

@@ -2,7 +2,7 @@ package main.entity;
 
 import main.GamePanel;
 import main.KeyHandler;
-import main.gameobject.GameObject;
+import main.sound.Sounds;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -22,7 +22,7 @@ public class Player extends Entity {
     /**
      * How many keys the player currently has
      */
-    int keyCount = 0;
+    public int keyCount = 0;
 
     /**
      * The Player class manages all player-related logic
@@ -67,7 +67,7 @@ public class Player extends Entity {
 
             // Check object collision
             int objectIndex = gamePanel.collisionChecker.checkObject(this,true);
-            pickupObject(objectIndex);
+            interactWithObject(objectIndex);
 
             if (!hasCollided) {
                 switch (direction) {
@@ -89,7 +89,7 @@ public class Player extends Entity {
         }
     }
 
-    public void pickupObject(int objectIndex) {
+    public void interactWithObject(int objectIndex) {
         if (objectIndex == -1) return;
 
         String objectName = gamePanel.objects[objectIndex].name;
@@ -97,8 +97,15 @@ public class Player extends Entity {
         switch (objectName.toLowerCase()) {
             case "key" -> {
                 keyCount++;
-                System.out.println("Key Count: " + keyCount);
-                gamePanel.playSoundEffect("coin");
+
+                gamePanel.playSoundEffect(Sounds.COIN);
+
+                int keysRemaining = 3 - keyCount;
+                if (keysRemaining == 0) {
+                    gamePanel.ui.showMessage("You've found all the keys! Find the castle to get the treasure!");
+                } else {
+                    gamePanel.ui.showMessage("You got a key! Only " + keysRemaining + " more keys to go!");
+                }
 
                 gamePanel.objects[objectIndex] = null;
             }
@@ -106,14 +113,26 @@ public class Player extends Entity {
                 if (keyCount > 0) {
                     gamePanel.objects[objectIndex] = null;
                     keyCount--;
-                    gamePanel.playSoundEffect("unlock");
+
+                    gamePanel.playSoundEffect(Sounds.UNLOCK);
+                } else {
+                    gamePanel.ui.showMessage("You need a key to open this door!");
                 }
                 System.out.println("Key Count: " + keyCount);
             }
             case "boots" -> {
                 speed += 2;
-                gamePanel.playSoundEffect("powerup");
+
+                gamePanel.ui.showMessage("Speed!");
+                gamePanel.playSoundEffect(Sounds.POWERUP);
+
                 gamePanel.objects[objectIndex] = null;
+            }
+            case "chest" -> {
+                gamePanel.ui.gameFinished = true;
+
+                gamePanel.stopMusic();
+                gamePanel.playSoundEffect(Sounds.FANFARE);
             }
         }
     }
