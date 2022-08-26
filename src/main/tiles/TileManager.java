@@ -22,29 +22,29 @@ public class TileManager {
         tiles = new Tile[10];
         mapTileNum = new int[gamePanel.WORLD_WIDTH][gamePanel.WORLD_HEIGHT];
 
-        getTileImage();
+        getTileImages();
         loadMap("/maps/world01.txt");
     }
 
-    public void getTileImage() {
+    public void getTileImages() {
         try {
             tiles[0] = new Tile();
             tiles[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/old/grass.png"));
 
             tiles[1] = new Tile();
             tiles[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/old/wall.png"));
-            tiles[1].collision = true;
+            tiles[1].hasCollision = true;
 
             tiles[2] = new Tile();
             tiles[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/old/water.png"));
-            tiles[2].collision = true;
+            tiles[2].hasCollision = true;
 
             tiles[3] = new Tile();
             tiles[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/old/earth.png"));
 
             tiles[4] = new Tile();
             tiles[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/old/tree.png"));
-            tiles[4].collision = true;
+            tiles[4].hasCollision = true;
 
             tiles[5] = new Tile();
             tiles[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/old/sand.png"));

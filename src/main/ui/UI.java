@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
 public class UI {
     public boolean shouldDisplayMessage = false;
     public String message = "";
-    public boolean gameFinished = false;
+    public boolean gameFinished = true;
 
     GamePanel gamePanel;
     Font font;
@@ -74,6 +74,7 @@ public class UI {
                 gamePanel.TILE_SIZE / 2, gamePanel.TILE_SIZE / 2,
                 gamePanel.TILE_SIZE, gamePanel.TILE_SIZE,
                 null);
+
         g2.drawString("- " + gamePanel.player.keyCount, 74, 65);
 
         playTime += (double)1/60;

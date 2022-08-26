@@ -29,8 +29,8 @@ public class CollisionChecker {
                 tileNum1 = gamePanel.tileManager.mapTileNum[leftCol][topRow];
                 tileNum2 = gamePanel.tileManager.mapTileNum[rightCol][bottomRow];
 
-                if (gamePanel.tileManager.tiles[tileNum1].collision
-                        || gamePanel.tileManager.tiles[tileNum2].collision) {
+                if (gamePanel.tileManager.tiles[tileNum1].hasCollision
+                        || gamePanel.tileManager.tiles[tileNum2].hasCollision) {
                     entity.hasCollided = true;
                 }
             }
@@ -39,8 +39,8 @@ public class CollisionChecker {
                 tileNum1 = gamePanel.tileManager.mapTileNum[leftCol][bottomRow];
                 tileNum2 = gamePanel.tileManager.mapTileNum[rightCol][bottomRow];
 
-                if (gamePanel.tileManager.tiles[tileNum1].collision
-                        || gamePanel.tileManager.tiles[tileNum2].collision) {
+                if (gamePanel.tileManager.tiles[tileNum1].hasCollision
+                        || gamePanel.tileManager.tiles[tileNum2].hasCollision) {
                     entity.hasCollided = true;
                 }
             }
@@ -49,8 +49,8 @@ public class CollisionChecker {
                 tileNum1 = gamePanel.tileManager.mapTileNum[leftCol][topRow];
                 tileNum2 = gamePanel.tileManager.mapTileNum[leftCol][bottomRow];
 
-                if (gamePanel.tileManager.tiles[tileNum1].collision
-                        || gamePanel.tileManager.tiles[tileNum2].collision) {
+                if (gamePanel.tileManager.tiles[tileNum1].hasCollision
+                        || gamePanel.tileManager.tiles[tileNum2].hasCollision) {
                     entity.hasCollided = true;
                 }
             }
@@ -59,8 +59,8 @@ public class CollisionChecker {
                 tileNum1 = gamePanel.tileManager.mapTileNum[rightCol][topRow];
                 tileNum2 = gamePanel.tileManager.mapTileNum[rightCol][bottomRow];
 
-                if (gamePanel.tileManager.tiles[tileNum1].collision
-                        || gamePanel.tileManager.tiles[tileNum2].collision) {
+                if (gamePanel.tileManager.tiles[tileNum1].hasCollision
+                        || gamePanel.tileManager.tiles[tileNum2].hasCollision) {
                     entity.hasCollided = true;
                 }
             }

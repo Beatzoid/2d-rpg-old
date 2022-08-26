@@ -10,11 +10,11 @@ public class Entity {
     public int worldX, worldY;
     public int speed;
 
-    public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
+    public BufferedImage up1Img, up2Img, down1Img, down2Img, left1Img, left2Img, right1Img, right2Img;
     public String direction;
 
-    public int spriteCounter = 0;
-    public int spriteNum = 1;
+    public int currentSpriteImageCounter = 0;
+    public int currentSpriteNum = 1;
     public Rectangle hitbox;
     public int hitboxDefaultX, hitboxDefaultY;
     public boolean hasCollided = false;

@@ -16,17 +16,15 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
-    GamePanel gamePanel;
-    KeyHandler keyHandler;
-
-    int standCounter;
-    boolean moving = false;
-    int pixelCounter;
-
-    /**
-     * How many keys the player currently has
-     */
     public int keyCount = 0;
+    public int keysRequired = 3;
+
+    private final GamePanel gamePanel;
+    private final KeyHandler keyHandler;
+
+    private int standCounter;
+    private boolean moving = false;
+    private int pixelCounter;
 
     /**
      * The Player class manages all player-related logic
@@ -40,6 +38,9 @@ public class Player extends Entity {
         screenX = gamePanel.SCREEN_WIDTH / 2 - (gamePanel.TILE_SIZE / 2);
         screenY = gamePanel.SCREEN_HEIGHT / 2 - (gamePanel.TILE_SIZE / 2);
 
+        worldX = gamePanel.TILE_SIZE * 23;
+        worldY = gamePanel.TILE_SIZE * 21;
+
         hitbox = new Rectangle();
         hitbox.x = 1;
         hitbox.y = 1;
@@ -48,12 +49,15 @@ public class Player extends Entity {
         hitbox.width = 46;
         hitbox.height = 46;
 
-        setDefaultValues();
+        speed = 4;
+        direction = "down";
+
         getPlayerImage();
     }
 
     public void update() {
         if (!moving) {
+            // Not moving
             if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
 
                 if (keyHandler.upPressed) {
@@ -69,7 +73,6 @@ public class Player extends Entity {
                 moving = true;
 
                 // Check tile collision
-                hasCollided = false;
                 gamePanel.collisionChecker.checkTile(this);
 
                 // Check object collision
@@ -85,23 +88,24 @@ public class Player extends Entity {
                     }
                 }
 
-                spriteCounter++;
+                currentSpriteImageCounter++;
                 // Every 12 frames
-                if (spriteCounter > 12) {
-                    if (spriteNum == 1) spriteNum = 2;
-                    else if (spriteNum == 2) spriteNum = 1;
+                if (currentSpriteImageCounter > 12) {
+                    if (currentSpriteNum == 1) currentSpriteNum = 2;
+                    else if (currentSpriteNum == 2) currentSpriteNum = 1;
 
-                    spriteCounter = 0;
+                    currentSpriteImageCounter = 0;
                 }
             } else {
                 standCounter++;
 
-                if (spriteNum == 20) {
+                if (standCounter == 20) {
                     standCounter = 0;
-                    spriteNum = 1;
+                    currentSpriteNum = 1;
                 }
             }
         } else {
+            // Moving
             if (!hasCollided) {
                 switch (direction) {
                     case "up" -> worldY -= speed;
@@ -111,13 +115,13 @@ public class Player extends Entity {
                 }
             }
 
-            spriteCounter++;
+            currentSpriteImageCounter++;
             // Every 12 frames
-            if (spriteCounter > 12) {
-                if (spriteNum == 1) spriteNum = 2;
-                else if (spriteNum == 2) spriteNum = 1;
+            if (currentSpriteImageCounter > 12) {
+                if (currentSpriteNum == 1) currentSpriteNum = 2;
+                else if (currentSpriteNum == 2) currentSpriteNum = 1;
 
-                spriteCounter = 0;
+                currentSpriteImageCounter = 0;
             }
         }
 
@@ -140,7 +144,7 @@ public class Player extends Entity {
 
                 gamePanel.playSoundEffect(Sounds.COIN);
 
-                int keysRemaining = 3 - keyCount;
+                int keysRemaining = keysRequired - keyCount;
                 if (keysRemaining == 0) {
                     gamePanel.ui.showMessage("You've found all the keys! Find the castle to get the treasure!");
                 } else {
@@ -182,23 +186,23 @@ public class Player extends Entity {
 
         switch (direction) {
             case "up" -> {
-                if (spriteNum == 1) image = up1;
-                if (spriteNum == 2) image = up2;
+                if (currentSpriteNum == 1) image = up1Img;
+                if (currentSpriteNum == 2) image = up2Img;
             }
 
             case "down" -> {
-                if (spriteNum == 1) image = down1;
-                if (spriteNum == 2) image = down2;
+                if (currentSpriteNum == 1) image = down1Img;
+                if (currentSpriteNum == 2) image = down2Img;
             }
 
             case "left" -> {
-                if (spriteNum == 1) image = left1;
-                if (spriteNum == 2) image = left2;
+                if (currentSpriteNum == 1) image = left1Img;
+                if (currentSpriteNum == 2) image = left2Img;
             }
 
             case "right" -> {
-                if (spriteNum == 1) image = right1;
-                if (spriteNum == 2) image = right2;
+                if (currentSpriteNum == 1) image = right1Img;
+                if (currentSpriteNum == 2) image = right2Img;
             }
         }
 
@@ -211,26 +215,16 @@ public class Player extends Entity {
 
     public void getPlayerImage() {
         try {
-            up1 = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_up_1.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_up_2.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_down_1.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_down_2.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_left_1.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_left_2.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_right_1.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_right_2.png"));
+            up1Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_up_1.png"));
+            up2Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_up_2.png"));
+            down1Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_down_1.png"));
+            down2Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_down_2.png"));
+            left1Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_left_1.png"));
+            left2Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_left_2.png"));
+            right1Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_right_1.png"));
+            right2Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_right_2.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Set the default values for the player
-     */
-    public void setDefaultValues() {
-        worldX = gamePanel.TILE_SIZE * 23;
-        worldY = gamePanel.TILE_SIZE * 21;
-        speed = 4;
-        direction = "down";
     }
 }

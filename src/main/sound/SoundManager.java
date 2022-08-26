@@ -15,7 +15,7 @@ public class SoundManager {
 
         loadDefaultSounds();
     }
-
+    
     public void setActiveFile(Sounds soundName) {
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(soundURLs.get(soundName));
