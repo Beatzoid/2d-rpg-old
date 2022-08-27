@@ -29,6 +29,8 @@ public class GamePanel extends JPanel implements Runnable {
     public GameObject[] objects;
     public ObjectManager objectManager;
 
+    public GameState gameState;
+
     /**
      * The GamePanel class manages all core game logic
      */
@@ -37,7 +39,7 @@ public class GamePanel extends JPanel implements Runnable {
         musicManager = new SoundManager();
         soundEffectsManager = new SoundManager();
         collisionChecker = new CollisionChecker(this);
-        keyHandler = new KeyHandler();
+        keyHandler = new KeyHandler(this);
         tileManager = new TileManager(this);
         objects = new GameObject[10];
         objectManager = new ObjectManager(this);
@@ -54,6 +56,8 @@ public class GamePanel extends JPanel implements Runnable {
         this.objectManager.setObject();
 
         playMusic(Sounds.MAIN_THEME);
+
+        gameState = GameState.PLAY;
     }
 
     /**
@@ -101,7 +105,13 @@ public class GamePanel extends JPanel implements Runnable {
      * Update the game
      */
     public void update() {
-        player.update();
+        if (gameState == GameState.PLAY) {
+            player.update();
+        }
+
+        if (gameState == GameState.PAUSE) {
+            // TODO: Pause State
+        }
     }
 
     public void paintComponent(Graphics g) {

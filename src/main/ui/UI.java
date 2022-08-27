@@ -2,6 +2,7 @@ package main.ui;
 
 import main.Constants;
 import main.GamePanel;
+import main.GameState;
 import main.gameobject.KeyObject;
 
 import java.awt.*;
@@ -16,85 +17,43 @@ public class UI {
 
     GamePanel gamePanel;
     Font font;
-    BufferedImage image;
-    int messageTimer = 0;
-    double playTime;
+    Graphics2D g2;
     DecimalFormat decimalFormat;
 
     public UI(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         decimalFormat = new DecimalFormat("#0.00");
 
-        KeyObject key = new KeyObject();
-        image = key.image;
-
         loadFont();
     }
 
     public void draw(Graphics2D g2) {
+        this.g2 = g2;
+
         g2.setFont(font);
         g2.setColor(Color.WHITE);
 
-        if (gameFinished) {
-            String text;
-            int textLength;
-            int x;
-            int y;
+        if (gamePanel.gameState == GameState.PLAY) {
 
-            g2.setColor(Color.YELLOW);
-            text = "Congratulations!";
-            textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-
-            x = Constants.SCREEN_WIDTH / 2 - textLength / 2;
-            y = Constants.SCREEN_HEIGHT / 2 - (Constants.TILE_SIZE);
-
-            g2.drawString(text, x, y);
-
-            g2.setColor(Color.WHITE);
-            text = "You found the treasure!";
-            textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-
-            x = Constants.SCREEN_WIDTH / 2 - textLength / 2;
-            y = Constants.SCREEN_HEIGHT / 2 + (Constants.TILE_SIZE + 3);
-
-            g2.drawString(text, x, y);
-
-            text = "Time: " + decimalFormat.format(playTime);
-            textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-
-            x = Constants.SCREEN_WIDTH / 2 - textLength / 2;
-            y = Constants.SCREEN_HEIGHT / 2 + (Constants.TILE_SIZE * 5);
-
-            g2.drawString(text, x, y);
-
-            gamePanel.gameThread = null;
-            return;
         }
 
-        g2.drawImage(image,
-                Constants.TILE_SIZE / 2, Constants.TILE_SIZE / 2,
-                Constants.TILE_SIZE, Constants.TILE_SIZE,
-                null);
+        if (gamePanel.gameState == GameState.PAUSE) drawPauseScreen();
+    }
 
-        g2.drawString("- " + gamePanel.player.keyCount, 74, 65);
+    public void drawPauseScreen() {
+        g2.setFont(font.deriveFont(Font.PLAIN, 80f));
 
-        playTime += (double)1/60;
-        g2.drawString("Time: " + decimalFormat.format(playTime), Constants.TILE_SIZE * 11, 65);
+        String text = "PAUSED";
 
-        if (shouldDisplayMessage) {
-            g2.setFont(g2.getFont().deriveFont(30f));
-            g2.drawString(message, Constants.TILE_SIZE / 2, Constants.TILE_SIZE * 5);
+        int x = getXForCenteredText(text);
+        int y = Constants.SCREEN_HEIGHT / 2;
 
-            messageTimer++;
+        g2.drawString(text, x, y);
+    }
 
-            // 60 seconds per frame
-            // 120 = 2 seconds
-            if (messageTimer > 120) {
-                messageTimer = 0;
-
-                shouldDisplayMessage = false;
-            }
-        }
+    public int getXForCenteredText(String text) {
+        int length = (int)g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        return Constants.SCREEN_WIDTH / 2 - length / 2;
     }
 
     public void showMessage(String message) {

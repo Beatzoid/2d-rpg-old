@@ -3,7 +3,6 @@ package main.entity;
 import main.Constants;
 import main.GamePanel;
 import main.KeyHandler;
-import main.sound.Sounds;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,9 +15,6 @@ import java.io.IOException;
 public class Player extends Entity {
     public final int screenX;
     public final int screenY;
-
-    public int keyCount = 0;
-    public int keysRequired = 3;
 
     private final GamePanel gamePanel;
     private final KeyHandler keyHandler;
@@ -137,50 +133,6 @@ public class Player extends Entity {
 
     public void interactWithObject(int objectIndex) {
         if (objectIndex == -1) return;
-
-        String objectName = gamePanel.objects[objectIndex].name;
-
-        switch (objectName.toLowerCase()) {
-            case "key" -> {
-                keyCount++;
-
-                gamePanel.playSoundEffect(Sounds.COIN);
-
-                int keysRemaining = keysRequired - keyCount;
-                if (keysRemaining == 0) {
-                    gamePanel.ui.showMessage("You've found all the keys! Find the castle to get the treasure!");
-                } else {
-                    gamePanel.ui.showMessage("You got a key! Only " + keysRemaining + " more keys to go!");
-                }
-
-                gamePanel.objects[objectIndex] = null;
-            }
-            case "door" -> {
-                if (keyCount > 0) {
-                    gamePanel.objects[objectIndex] = null;
-                    keyCount--;
-
-                    gamePanel.playSoundEffect(Sounds.UNLOCK);
-                } else {
-                    gamePanel.ui.showMessage("You need a key to open this door!");
-                }
-                System.out.println("Key Count: " + keyCount);
-            }
-            case "boots" -> {
-                speed += 2;
-
-                gamePanel.ui.showMessage("Speed!");
-                gamePanel.playSoundEffect(Sounds.POWERUP);
-
-                gamePanel.objects[objectIndex] = null;
-            }
-            case "chest" -> {
-                gamePanel.ui.gameFinished = true;
-
-                gamePanel.stopMusic();
-                gamePanel.playSoundEffect(Sounds.FANFARE);
-            }
-        }
     }
 
     public void draw(Graphics2D g2) {
