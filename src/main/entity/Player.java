@@ -4,10 +4,8 @@ import main.Constants;
 import main.GamePanel;
 import main.KeyHandler;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * Manages all player-related logic
@@ -20,7 +18,7 @@ public class Player extends Entity {
     private final KeyHandler keyHandler;
 
     private int standCounter;
-    private boolean moving = false;
+    private boolean isMoving = false;
     private int pixelCounter;
 
     /**
@@ -29,6 +27,8 @@ public class Player extends Entity {
      * @param keyHandler The key handler
      */
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
+        super(gamePanel);
+
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
 
@@ -49,12 +49,13 @@ public class Player extends Entity {
         speed = 4;
         direction = "down";
 
-        getPlayerImage();
+        getPlayerImages();
     }
 
     public void update() {
-        if (!moving) {
+        if (!isMoving) {
             // Not moving
+
             if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
 
                 if (keyHandler.upPressed) {
@@ -67,7 +68,7 @@ public class Player extends Entity {
                     direction = "right";
                 }
 
-                moving = true;
+                isMoving = true;
 
                 // Check tile collision
                 hasCollided = false;
@@ -77,33 +78,21 @@ public class Player extends Entity {
                 int objectIndex = gamePanel.collisionChecker.checkObject(this,true);
                 interactWithObject(objectIndex);
 
-                if (!hasCollided) {
-                    switch (direction) {
-                        case "up" -> worldY -= speed;
-                        case "down" -> worldY += speed;
-                        case "left" -> worldX -= speed;
-                        case "right" -> worldX += speed;
-                    }
-                }
-
-                currentSpriteImageCounter++;
-                // Every 12 frames
-                if (currentSpriteImageCounter > 12) {
-                    if (currentSpriteNum == 1) currentSpriteNum = 2;
-                    else if (currentSpriteNum == 2) currentSpriteNum = 1;
-
-                    currentSpriteImageCounter = 0;
-                }
+                int npcIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.npcs);
+                interactWithNPC(npcIndex);
             } else {
                 standCounter++;
 
-                if (standCounter == 20) {
+                if (standCounter == 15) {
                     standCounter = 0;
                     currentSpriteNum = 1;
                 }
             }
-        } else {
+        }
+
+        if (isMoving) {
             // Moving
+
             if (!hasCollided) {
                 switch (direction) {
                     case "up" -> worldY -= speed;
@@ -121,14 +110,19 @@ public class Player extends Entity {
 
                 currentSpriteImageCounter = 0;
             }
-        }
 
-        pixelCounter += speed;
+            pixelCounter += speed;
 
-        if (pixelCounter == Constants.TILE_SIZE) {
-            moving = false;
-            pixelCounter = 0;
+            if (pixelCounter == Constants.TILE_SIZE) {
+                isMoving = false;
+                pixelCounter = 0;
+            }
         }
+    }
+
+    private void interactWithNPC(int npcIndex) {
+        if (npcIndex == -1) return;
+        System.out.println("NPC Hit");
     }
 
     public void interactWithObject(int objectIndex) {
@@ -167,18 +161,14 @@ public class Player extends Entity {
 //         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
     }
 
-    public void getPlayerImage() {
-        try {
-            up1Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_up_1.png"));
-            up2Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_up_2.png"));
-            down1Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_down_1.png"));
-            down2Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_down_2.png"));
-            left1Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_left_1.png"));
-            left2Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_left_2.png"));
-            right1Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_right_1.png"));
-            right2Img = ImageIO.read(getClass().getResourceAsStream("/player/walk/boy_right_2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void getPlayerImages() {
+        up1Img = getImage("/player/walk/boy_up_1");
+        up2Img = getImage("/player/walk/boy_up_2");
+        down1Img = getImage("/player/walk/boy_down_1");
+        down2Img = getImage("/player/walk/boy_down_2");
+        left1Img = getImage("/player/walk/boy_left_1");
+        left2Img = getImage("/player/walk/boy_left_2");
+        right1Img = getImage("/player/walk/boy_right_1");
+        right2Img = getImage("/player/walk/boy_right_2");
     }
 }

@@ -1,7 +1,7 @@
 package main;
 
+import main.entity.Entity;
 import main.entity.Player;
-import main.gameobject.ObjectManager;
 import main.gameobject.GameObject;
 import main.sound.SoundManager;
 import main.sound.Sounds;
@@ -27,7 +27,8 @@ public class GamePanel extends JPanel implements Runnable {
 
     // Entities and objects
     public GameObject[] objects;
-    public ObjectManager objectManager;
+    public AssetManager assetManager;
+    public Entity[] npcs;
 
     public GameState gameState;
 
@@ -42,8 +43,9 @@ public class GamePanel extends JPanel implements Runnable {
         keyHandler = new KeyHandler(this);
         tileManager = new TileManager(this);
         objects = new GameObject[10];
-        objectManager = new ObjectManager(this);
+        assetManager = new AssetManager(this);
         player = new Player(this, keyHandler);
+        npcs = new Entity[10];
 
         this.setPreferredSize(new Dimension(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
@@ -53,7 +55,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setup() {
-        this.objectManager.setObject();
+        assetManager.setupObjects();
+        assetManager.setupNPCs();
 
         playMusic(Sounds.MAIN_THEME);
 
@@ -107,6 +110,11 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         if (gameState == GameState.PLAY) {
             player.update();
+            for (Entity npc : npcs) {
+                if (npc != null) {
+                    npc.update();
+                }
+            }
         }
 
         if (gameState == GameState.PAUSE) {
@@ -124,6 +132,12 @@ public class GamePanel extends JPanel implements Runnable {
         for (GameObject obj : objects) {
             if (obj != null) {
                 obj.draw(g2, this);
+            }
+        }
+
+        for (Entity npc : npcs) {
+            if (npc != null) {
+                npc.draw(g2);
             }
         }
 
