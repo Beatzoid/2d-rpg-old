@@ -16,16 +16,16 @@ public class CollisionChecker {
         int topWorldY = entity.worldY + entity.hitbox.y;
         int bottomWorldY = entity.worldY + entity.hitbox.y + entity.hitbox.height;
 
-        int leftCol = leftWorldX / gamePanel.TILE_SIZE;
-        int rightCol = rightWorldX / gamePanel.TILE_SIZE;
-        int topRow = topWorldY / gamePanel.TILE_SIZE;
-        int bottomRow = topWorldY / gamePanel.TILE_SIZE;
+        int leftCol = leftWorldX / Constants.TILE_SIZE;
+        int rightCol = rightWorldX / Constants.TILE_SIZE;
+        int topRow = topWorldY / Constants.TILE_SIZE;
+        int bottomRow = topWorldY / Constants.TILE_SIZE;
 
         int tileNum1, tileNum2;
 
         switch (entity.direction) {
             case "up" -> {
-                topRow = (topWorldY - entity.speed) / gamePanel.TILE_SIZE;
+                topRow = (topWorldY - entity.speed) / Constants.TILE_SIZE;
                 tileNum1 = gamePanel.tileManager.mapTileNum[leftCol][topRow];
                 tileNum2 = gamePanel.tileManager.mapTileNum[rightCol][bottomRow];
 
@@ -35,7 +35,7 @@ public class CollisionChecker {
                 }
             }
             case "down" -> {
-                bottomRow = (bottomWorldY + entity.speed) / gamePanel.TILE_SIZE;
+                bottomRow = (bottomWorldY + entity.speed) / Constants.TILE_SIZE;
                 tileNum1 = gamePanel.tileManager.mapTileNum[leftCol][bottomRow];
                 tileNum2 = gamePanel.tileManager.mapTileNum[rightCol][bottomRow];
 
@@ -45,7 +45,7 @@ public class CollisionChecker {
                 }
             }
             case "left" -> {
-                leftCol = (leftWorldX - entity.speed) / gamePanel.TILE_SIZE;
+                leftCol = (leftWorldX - entity.speed) / Constants.TILE_SIZE;
                 tileNum1 = gamePanel.tileManager.mapTileNum[leftCol][topRow];
                 tileNum2 = gamePanel.tileManager.mapTileNum[leftCol][bottomRow];
 
@@ -55,7 +55,7 @@ public class CollisionChecker {
                 }
             }
             case "right" -> {
-                rightCol = (rightWorldX + entity.speed) / gamePanel.TILE_SIZE;
+                rightCol = (rightWorldX + entity.speed) / Constants.TILE_SIZE;
                 tileNum1 = gamePanel.tileManager.mapTileNum[rightCol][topRow];
                 tileNum2 = gamePanel.tileManager.mapTileNum[rightCol][bottomRow];
 

@@ -15,22 +15,6 @@ import java.awt.*;
  * Main game logic
  */
 public class GamePanel extends JPanel implements Runnable {
-    // Screen Settings
-    public final int ORIGINAL_TILE_SIZE = 16; // 16x16 tile
-    public final int SCALE = 3;
-    public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // 48x48 tile
-    public final int MAX_SCREEN_COL = 16; // 16 tiles horizontally
-    public final int MAX_SCREEN_ROW = 12; // 12 tiles vertically
-    public final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
-    public final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
-    public final int FPS = 60; // 60 frames per second
-
-    // World Settings
-    public final int MAX_WORLD_COL = 50;
-    public final int MAX_WORLD_ROW = 50;
-    public final int WORLD_WIDTH = TILE_SIZE * MAX_WORLD_COL;
-    public final int WORLD_HEIGHT = TILE_SIZE * MAX_WORLD_ROW;
-
     // System
     public CollisionChecker collisionChecker;
     public Player player;
@@ -59,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable {
         objectManager = new ObjectManager(this);
         player = new Player(this, keyHandler);
 
-        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        this.setPreferredSize(new Dimension(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
@@ -82,7 +66,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        double drawInterval = (float)1000000000 / FPS; // 0.01666 seconds
+        double drawInterval = (float)1000000000 / Constants.FPS; // 0.01666 seconds
         double deltaTime = 0;
         long lastTime = System.nanoTime();
         long currentTime;

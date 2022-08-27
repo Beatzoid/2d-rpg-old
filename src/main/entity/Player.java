@@ -1,5 +1,6 @@
 package main.entity;
 
+import main.Constants;
 import main.GamePanel;
 import main.KeyHandler;
 import main.sound.Sounds;
@@ -35,11 +36,11 @@ public class Player extends Entity {
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
 
-        screenX = gamePanel.SCREEN_WIDTH / 2 - (gamePanel.TILE_SIZE / 2);
-        screenY = gamePanel.SCREEN_HEIGHT / 2 - (gamePanel.TILE_SIZE / 2);
+        screenX = Constants.SCREEN_WIDTH / 2 - (Constants.TILE_SIZE / 2);
+        screenY = Constants.SCREEN_HEIGHT / 2 - (Constants.TILE_SIZE / 2);
 
-        worldX = gamePanel.TILE_SIZE * 23;
-        worldY = gamePanel.TILE_SIZE * 21;
+        worldX = Constants.TILE_SIZE * 23;
+        worldY = Constants.TILE_SIZE * 21;
 
         hitbox = new Rectangle();
         hitbox.x = 1;
@@ -128,7 +129,7 @@ public class Player extends Entity {
 
         pixelCounter += speed;
 
-        if (pixelCounter == gamePanel.TILE_SIZE) {
+        if (pixelCounter == Constants.TILE_SIZE) {
             moving = false;
             pixelCounter = 0;
         }
@@ -207,7 +208,7 @@ public class Player extends Entity {
             }
         }
 
-        g2.drawImage(image, screenX, screenY, gamePanel.TILE_SIZE, gamePanel.TILE_SIZE, null);
+        g2.drawImage(image, screenX, screenY, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 
         // Display hitbox
 //         g2.setColor(Color.red);

@@ -1,5 +1,6 @@
 package main.gameobject;
 
+import main.Constants;
 import main.GamePanel;
 
 import java.awt.*;
@@ -23,11 +24,11 @@ public class GameObject {
         int screenX = worldX - playerWorldX + playerScreenX;
         int screenY = worldY - playerWorldY + playerScreenY;
 
-        if (worldX + gamePanel.TILE_SIZE > playerWorldX - playerScreenX &&
-                worldX - gamePanel.TILE_SIZE < playerWorldX + playerScreenX &&
-                worldY + gamePanel.TILE_SIZE > playerWorldY - playerScreenY &&
-                worldY - gamePanel.TILE_SIZE < playerWorldY + playerWorldY) {
-            g2.drawImage(image, screenX, screenY, gamePanel.TILE_SIZE, gamePanel.TILE_SIZE, null);
+        if (worldX + Constants.TILE_SIZE > playerWorldX - playerScreenX &&
+                worldX - Constants.TILE_SIZE < playerWorldX + playerScreenX &&
+                worldY + Constants.TILE_SIZE > playerWorldY - playerScreenY &&
+                worldY - Constants.TILE_SIZE < playerWorldY + playerWorldY) {
+            g2.drawImage(image, screenX, screenY, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
         }
     }
 }

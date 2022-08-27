@@ -1,5 +1,6 @@
 package main.tiles;
 
+import main.Constants;
 import main.GamePanel;
 import main.entity.Player;
 
@@ -20,7 +21,7 @@ public class TileManager {
         this.gamePanel = gamePanel;
 
         tiles = new Tile[50];
-        mapTileNum = new int[gamePanel.WORLD_WIDTH][gamePanel.WORLD_HEIGHT];
+        mapTileNum = new int[Constants.WORLD_WIDTH][Constants.WORLD_HEIGHT];
 
         getTileImages();
         loadMap("/maps/worldV2.txt");
@@ -91,10 +92,10 @@ public class TileManager {
             int col = 0;
             int row = 0;
 
-            while (col < gamePanel.MAX_WORLD_COL && row < gamePanel.MAX_WORLD_ROW) {
+            while (col < Constants.MAX_WORLD_COL && row < Constants.MAX_WORLD_ROW) {
                 String line = bufferedReader.readLine();
 
-                while (col < gamePanel.MAX_WORLD_COL) {
+                while (col < Constants.MAX_WORLD_COL) {
                     String[] numbers = line.split(" ");
 
                     int num = Integer.parseInt(numbers[col]);
@@ -103,7 +104,7 @@ public class TileManager {
                     col++;
                 }
 
-                if (col == gamePanel.MAX_WORLD_COL) {
+                if (col == Constants.MAX_WORLD_COL) {
                     col = 0;
                     row++;
                 }
@@ -119,7 +120,7 @@ public class TileManager {
         int worldCol = 0;
         int worldRow = 0;
 
-        while (worldCol < gamePanel.MAX_WORLD_COL && worldRow < gamePanel.MAX_WORLD_ROW) {
+        while (worldCol < Constants.MAX_WORLD_COL && worldRow < Constants.MAX_WORLD_ROW) {
             int tileNum = mapTileNum[worldCol][worldRow];
 
             Player player = gamePanel.player;
@@ -128,21 +129,21 @@ public class TileManager {
             int playerWorldX = player.worldX;
             int playerWorldY = player.worldY;
 
-            int worldX = worldCol * gamePanel.TILE_SIZE;
-            int worldY = worldRow * gamePanel.TILE_SIZE;
+            int worldX = worldCol * Constants.TILE_SIZE;
+            int worldY = worldRow * Constants.TILE_SIZE;
             int screenX = worldX - playerWorldX + playerScreenX;
             int screenY = worldY - playerWorldY + playerScreenY;
 
-            if (worldX + gamePanel.TILE_SIZE > playerWorldX - playerScreenX &&
-                    worldX - gamePanel.TILE_SIZE < playerWorldX + playerScreenX &&
-                    worldY + gamePanel.TILE_SIZE > playerWorldY - playerScreenY &&
-                    worldY - gamePanel.TILE_SIZE < playerWorldY + playerWorldY) {
-                g2.drawImage(tiles[tileNum].image, screenX, screenY, gamePanel.TILE_SIZE, gamePanel.TILE_SIZE, null);
+            if (worldX + Constants.TILE_SIZE > playerWorldX - playerScreenX &&
+                    worldX - Constants.TILE_SIZE < playerWorldX + playerScreenX &&
+                    worldY + Constants.TILE_SIZE > playerWorldY - playerScreenY &&
+                    worldY - Constants.TILE_SIZE < playerWorldY + playerWorldY) {
+                g2.drawImage(tiles[tileNum].image, screenX, screenY, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
             }
 
             worldCol++;
 
-            if (worldCol == gamePanel.MAX_WORLD_COL) {
+            if (worldCol == Constants.MAX_WORLD_COL) {
                 worldCol = 0;
                 worldRow++;
             }

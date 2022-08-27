@@ -1,5 +1,6 @@
 package main.ui;
 
+import main.Constants;
 import main.GamePanel;
 import main.gameobject.KeyObject;
 
@@ -44,8 +45,8 @@ public class UI {
             text = "Congratulations!";
             textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 
-            x = gamePanel.SCREEN_WIDTH / 2 - textLength / 2;
-            y = gamePanel.SCREEN_HEIGHT / 2 - (gamePanel.TILE_SIZE);
+            x = Constants.SCREEN_WIDTH / 2 - textLength / 2;
+            y = Constants.SCREEN_HEIGHT / 2 - (Constants.TILE_SIZE);
 
             g2.drawString(text, x, y);
 
@@ -53,16 +54,16 @@ public class UI {
             text = "You found the treasure!";
             textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 
-            x = gamePanel.SCREEN_WIDTH / 2 - textLength / 2;
-            y = gamePanel.SCREEN_HEIGHT / 2 + (gamePanel.TILE_SIZE + 3);
+            x = Constants.SCREEN_WIDTH / 2 - textLength / 2;
+            y = Constants.SCREEN_HEIGHT / 2 + (Constants.TILE_SIZE + 3);
 
             g2.drawString(text, x, y);
 
             text = "Time: " + decimalFormat.format(playTime);
             textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
 
-            x = gamePanel.SCREEN_WIDTH / 2 - textLength / 2;
-            y = gamePanel.SCREEN_HEIGHT / 2 + (gamePanel.TILE_SIZE * 5);
+            x = Constants.SCREEN_WIDTH / 2 - textLength / 2;
+            y = Constants.SCREEN_HEIGHT / 2 + (Constants.TILE_SIZE * 5);
 
             g2.drawString(text, x, y);
 
@@ -71,18 +72,18 @@ public class UI {
         }
 
         g2.drawImage(image,
-                gamePanel.TILE_SIZE / 2, gamePanel.TILE_SIZE / 2,
-                gamePanel.TILE_SIZE, gamePanel.TILE_SIZE,
+                Constants.TILE_SIZE / 2, Constants.TILE_SIZE / 2,
+                Constants.TILE_SIZE, Constants.TILE_SIZE,
                 null);
 
         g2.drawString("- " + gamePanel.player.keyCount, 74, 65);
 
         playTime += (double)1/60;
-        g2.drawString("Time: " + decimalFormat.format(playTime), gamePanel.TILE_SIZE * 11, 65);
+        g2.drawString("Time: " + decimalFormat.format(playTime), Constants.TILE_SIZE * 11, 65);
 
         if (shouldDisplayMessage) {
             g2.setFont(g2.getFont().deriveFont(30f));
-            g2.drawString(message, gamePanel.TILE_SIZE / 2, gamePanel.TILE_SIZE * 5);
+            g2.drawString(message, Constants.TILE_SIZE / 2, Constants.TILE_SIZE * 5);
 
             messageTimer++;
 
