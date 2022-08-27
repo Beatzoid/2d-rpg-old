@@ -73,6 +73,7 @@ public class Player extends Entity {
                 moving = true;
 
                 // Check tile collision
+                hasCollided = false;
                 gamePanel.collisionChecker.checkTile(this);
 
                 // Check object collision
@@ -209,8 +210,8 @@ public class Player extends Entity {
         g2.drawImage(image, screenX, screenY, gamePanel.TILE_SIZE, gamePanel.TILE_SIZE, null);
 
         // Display hitbox
-        // g2.setColor(Color.red);
-        // g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
+//         g2.setColor(Color.red);
+//         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
     }
 
     public void getPlayerImage() {

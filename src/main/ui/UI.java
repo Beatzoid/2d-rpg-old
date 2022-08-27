@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
 public class UI {
     public boolean shouldDisplayMessage = false;
     public String message = "";
-    public boolean gameFinished = true;
+    public boolean gameFinished = false;
 
     GamePanel gamePanel;
     Font font;

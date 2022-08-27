@@ -19,35 +19,65 @@ public class TileManager {
     public TileManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
 
-        tiles = new Tile[10];
+        tiles = new Tile[50];
         mapTileNum = new int[gamePanel.WORLD_WIDTH][gamePanel.WORLD_HEIGHT];
 
         getTileImages();
-        loadMap("/maps/world01.txt");
+        loadMap("/maps/worldV2.txt");
     }
 
     public void getTileImages() {
+        // Placeholders
+        addTile(0, "grass00", false);
+        addTile(1, "grass00", false);
+        addTile(2, "grass00", false);
+        addTile(3, "grass00", false);
+        addTile(4, "grass00", false);
+        addTile(5, "grass00", false);
+        addTile(6, "grass00", false);
+        addTile(7, "grass00", false);
+        addTile(8, "grass00", false);
+        addTile(9, "grass00", false);
+
+        addTile(10, "grass00", false);
+        addTile(11, "grass01", false);
+        addTile(12, "water00", true);
+        addTile(13, "water01", true);
+        addTile(14, "water02", true);
+        addTile(15, "water03", true);
+        addTile(16, "water04", true);
+        addTile(17, "water05", true);
+        addTile(18, "water06", true);
+        addTile(19, "water07", true);
+        addTile(20, "water08", true);
+        addTile(21, "water09", true);
+        addTile(22, "water10", true);
+        addTile(23, "water11", true);
+        addTile(24, "water12", true);
+        addTile(25, "water13", true);
+        addTile(26, "road00", false);
+        addTile(27, "road01", false);
+        addTile(28, "road02", false);
+        addTile(29, "road03", false);
+        addTile(30, "road04", false);
+        addTile(31, "road05", false);
+        addTile(32, "road06", false);
+        addTile(33, "road07", false);
+        addTile(34, "road08", false);
+        addTile(35, "road09", false);
+        addTile(36, "road10", false);
+        addTile(37, "road11", false);
+        addTile(38, "road12", false);
+        addTile(39, "earth", false);
+        addTile(40, "wall", true);
+        addTile(41, "tree", true);
+    }
+
+    public void addTile(int index, String tileName, boolean hasCollision) {
         try {
-            tiles[0] = new Tile();
-            tiles[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/old/grass.png"));
-
-            tiles[1] = new Tile();
-            tiles[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/old/wall.png"));
-            tiles[1].hasCollision = true;
-
-            tiles[2] = new Tile();
-            tiles[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/old/water.png"));
-            tiles[2].hasCollision = true;
-
-            tiles[3] = new Tile();
-            tiles[3].image = ImageIO.read(getClass().getResourceAsStream("/tiles/old/earth.png"));
-
-            tiles[4] = new Tile();
-            tiles[4].image = ImageIO.read(getClass().getResourceAsStream("/tiles/old/tree.png"));
-            tiles[4].hasCollision = true;
-
-            tiles[5] = new Tile();
-            tiles[5].image = ImageIO.read(getClass().getResourceAsStream("/tiles/old/sand.png"));
+            tiles[index] = new Tile();
+            tiles[index].image = ImageIO.read(getClass().getResourceAsStream("/tiles/new/" + tileName + ".png"));
+            tiles[index].hasCollision = hasCollision;
         } catch (IOException e) {
             e.printStackTrace();
         }
