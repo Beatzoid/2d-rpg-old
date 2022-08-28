@@ -8,7 +8,7 @@ import java.awt.event.KeyListener;
  */
 public class KeyHandler implements KeyListener {
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
 
     private final GamePanel gamePanel;
 
@@ -23,26 +23,36 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
-        if (keyCode == KeyEvent.VK_W) {
-            upPressed = true;
+        if (keyCode == KeyEvent.VK_ENTER) {
+            enterPressed = true;
         }
 
-        if (keyCode == KeyEvent.VK_S) {
-            downPressed = true;
-        }
+        if (gamePanel.gameState == GameState.PLAY) {
+            if (keyCode == KeyEvent.VK_W) {
+                upPressed = true;
+            }
 
-        if (keyCode == KeyEvent.VK_A) {
-            leftPressed = true;
-        }
+            if (keyCode == KeyEvent.VK_S) {
+                downPressed = true;
+            }
 
-        if (keyCode == KeyEvent.VK_D) {
-            rightPressed = true;
-        }
+            if (keyCode == KeyEvent.VK_A) {
+                leftPressed = true;
+            }
 
-        if (keyCode == KeyEvent.VK_P) {
-            if (gamePanel.gameState == GameState.PLAY) {
+            if (keyCode == KeyEvent.VK_D) {
+                rightPressed = true;
+            }
+
+            if (keyCode == KeyEvent.VK_P) {
                 gamePanel.gameState = GameState.PAUSE;
-            } else if (gamePanel.gameState == GameState.PAUSE) {
+            }
+        } else if (gamePanel.gameState == GameState.PAUSE) {
+            if (keyCode == KeyEvent.VK_P) {
+                gamePanel.gameState = GameState.PLAY;
+            }
+        } else if (gamePanel.gameState == GameState.DIALOG) {
+            if (keyCode == KeyEvent.VK_ENTER) {
                 gamePanel.gameState = GameState.PLAY;
             }
         }
@@ -66,6 +76,10 @@ public class KeyHandler implements KeyListener {
 
         if (keyCode == KeyEvent.VK_D) {
             rightPressed = false;
+        }
+
+        if (keyCode == KeyEvent.VK_ENTER) {
+            gamePanel.keyHandler.enterPressed = false;
         }
     }
 }

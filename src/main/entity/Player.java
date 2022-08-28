@@ -2,6 +2,7 @@ package main.entity;
 
 import main.Constants;
 import main.GamePanel;
+import main.GameState;
 import main.KeyHandler;
 
 import java.awt.*;
@@ -56,7 +57,9 @@ public class Player extends Entity {
         if (!isMoving) {
             // Not moving
 
-            if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
+            if (keyHandler.upPressed || keyHandler.downPressed
+                    || keyHandler.leftPressed || keyHandler.rightPressed
+            || keyHandler.enterPressed) {
 
                 if (keyHandler.upPressed) {
                     direction = "up";
@@ -78,9 +81,12 @@ public class Player extends Entity {
                 int objectIndex = gamePanel.collisionChecker.checkObject(this,true);
                 interactWithObject(objectIndex);
 
+                // Check NPC collision
                 int npcIndex = gamePanel.collisionChecker.checkEntity(this, gamePanel.npcs);
                 interactWithNPC(npcIndex);
             } else {
+                // Transition from moving sprite to standing sprite
+                // smoothly
                 standCounter++;
 
                 if (standCounter == 15) {
@@ -103,7 +109,7 @@ public class Player extends Entity {
             }
 
             currentSpriteImageCounter++;
-            // Every 12 frames
+            // Every 12 frames change the player sprite
             if (currentSpriteImageCounter > 12) {
                 if (currentSpriteNum == 1) currentSpriteNum = 2;
                 else if (currentSpriteNum == 2) currentSpriteNum = 1;
@@ -111,6 +117,7 @@ public class Player extends Entity {
                 currentSpriteImageCounter = 0;
             }
 
+            // Tile grid movement
             pixelCounter += speed;
 
             if (pixelCounter == Constants.TILE_SIZE) {
@@ -122,7 +129,11 @@ public class Player extends Entity {
 
     private void interactWithNPC(int npcIndex) {
         if (npcIndex == -1) return;
-        System.out.println("NPC Hit");
+
+        if (gamePanel.keyHandler.enterPressed) {
+            gamePanel.gameState = GameState.DIALOG;
+            gamePanel.npcs[npcIndex].speak();
+        }
     }
 
     public void interactWithObject(int objectIndex) {
@@ -161,7 +172,7 @@ public class Player extends Entity {
 //         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
     }
 
-    public void getPlayerImages() {
+    private void getPlayerImages() {
         up1Img = getImage("/player/walk/boy_up_1");
         up2Img = getImage("/player/walk/boy_up_2");
         down1Img = getImage("/player/walk/boy_down_1");

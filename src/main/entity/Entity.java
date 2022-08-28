@@ -26,7 +26,10 @@ public class Entity {
 
     public int actionLockCounter = 0;
 
-    private final GamePanel gamePanel;
+    protected String[] dialogTexts = new String[20];
+    protected int dialogIndex = 0;
+
+    protected final GamePanel gamePanel;
 
     public Entity(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -34,7 +37,22 @@ public class Entity {
 
     public void setAction() { }
 
+    public void speak() {
+        if (dialogTexts[dialogIndex] == null) dialogIndex = 0;
+
+        gamePanel.ui.currentDialogText = dialogTexts[dialogIndex];
+        dialogIndex++;
+
+        switch (gamePanel.player.direction) {
+            case "up" -> direction = "down";
+            case "down" -> direction = "up";
+            case "left" -> direction = "right";
+            case "right" -> direction = "left";
+        }
+    }
+
     public void update() {
+        // NPC animation
         setAction();
 
         hasCollided = false;

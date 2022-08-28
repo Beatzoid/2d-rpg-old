@@ -1,6 +1,7 @@
 package main.entity;
 
 import main.GamePanel;
+import main.GameState;
 
 import java.util.Random;
 
@@ -12,7 +13,16 @@ public class OldManNPC extends Entity {
         direction = "down";
         speed = 1;
 
+        dialogTexts[0] = "Hello lad!";
+        dialogTexts[1] = "I've heard that you've come to this island to find \nthe long-lost treasure";
+        dialogTexts[2] = "I used to be a great wizard, but now... I'm afraid \nI'm too old to go on adventures";
+        dialogTexts[3] = "Anyway, good luck on your quest!";
+
         getNPCImages();
+    }
+
+    public void speak() {
+        super.speak();
     }
 
     public void setAction() {
