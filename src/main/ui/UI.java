@@ -3,19 +3,16 @@ package main.ui;
 import main.Constants;
 import main.GamePanel;
 import main.GameState;
-import main.gameobject.KeyObject;
+import main.Utils;
 
-import javax.imageio.plugins.tiff.TIFFDirectory;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.concurrent.BlockingDeque;
 
 public class UI {
     public boolean shouldDisplayMessage = false;
     public String message = "";
     public String currentDialogText = "";
+    public int currentTitleScreenSelectionIndex = 0;
 
     GamePanel gamePanel;
     Font font;
@@ -33,15 +30,9 @@ public class UI {
         g2.setFont(font);
         g2.setColor(Color.WHITE);
 
-        if (gamePanel.gameState == GameState.PLAY) {
-
-        }
-
+        if (gamePanel.gameState == GameState.TITLE_STATE) drawTitleScreen();
         if (gamePanel.gameState == GameState.PAUSE) drawPauseScreen();
-
-        if (gamePanel.gameState == GameState.DIALOG) {
-            drawDialogScreen();
-        }
+        if (gamePanel.gameState == GameState.DIALOG) drawDialogScreen();
     }
 
     public void drawDialogScreen() {
@@ -63,6 +54,77 @@ public class UI {
         }
     }
 
+    public void drawPauseScreen() {
+        g2.setFont(font.deriveFont(Font.PLAIN, 80f));
+
+        String text = "PAUSED";
+
+        int x = getXForCenteredText(text);
+        int y = Constants.SCREEN_HEIGHT / 2;
+
+        g2.drawString(text, x, y);
+    }
+
+    public void drawTitleScreen() {
+        currentTitleScreenSelectionIndex = Utils.clamp(currentTitleScreenSelectionIndex, 0, 2);
+
+        // Semi-transparent background
+        g2.setColor(new Color(0, 0, 0, 0.75f));
+        g2.fillRect(0, 0, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+
+        // Game name
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96f));
+        String text = "Blue Boy Adventure";
+        int x = getXForCenteredText(text);
+        int y = Constants.TILE_SIZE * 3;
+
+        // Text shadow
+        g2.setColor(Color.BLACK);
+        g2.drawString(text, x + 5, y + 5);
+
+        // Draw game name
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, x, y);
+
+        // Character image
+        x = Constants.SCREEN_WIDTH / 2 - (Constants.TILE_SIZE * 2) / 2;
+        y += Constants.TILE_SIZE * 2;
+
+        g2.drawImage(gamePanel.player.down1Img,
+                x, y, Constants.TILE_SIZE * 2, Constants.TILE_SIZE * 2,
+                null);
+
+        // Menu
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48f));
+
+        text = "New game";
+        x = getXForCenteredText(text);
+        y += Constants.TILE_SIZE * 3.5;
+        g2.drawString(text, x, y);
+
+        if (currentTitleScreenSelectionIndex == 0) {
+            g2.drawString(">", x - Constants.TILE_SIZE, y);
+        }
+
+        text = "Load game";
+        x = getXForCenteredText(text);
+        y += Constants.TILE_SIZE * 1.3;
+        g2.drawString(text, x, y);
+
+        if (currentTitleScreenSelectionIndex == 1) {
+            g2.drawString(">", x - Constants.TILE_SIZE, y);
+        }
+
+        text = "Quit";
+        x = getXForCenteredText(text);
+        y += Constants.TILE_SIZE * 1.3;
+        g2.drawString(text, x, y);
+
+        if (currentTitleScreenSelectionIndex == 2) {
+            g2.drawString(">", x - Constants.TILE_SIZE, y);
+        }
+    }
+
     public void drawSubMenu(int x, int y, int width, int height) {
         // Background rectangle
         g2.setColor(new Color(0, 0, 0, 210));
@@ -73,17 +135,6 @@ public class UI {
         // Stroke width of 5px
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
-    }
-
-    public void drawPauseScreen() {
-        g2.setFont(font.deriveFont(Font.PLAIN, 80f));
-
-        String text = "PAUSED";
-
-        int x = getXForCenteredText(text);
-        int y = Constants.SCREEN_HEIGHT / 2;
-
-        g2.drawString(text, x, y);
     }
 
     public int getXForCenteredText(String text) {

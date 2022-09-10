@@ -61,17 +61,19 @@ public class Player extends Entity {
                     || keyHandler.leftPressed || keyHandler.rightPressed
             || keyHandler.enterPressed) {
 
-                if (keyHandler.upPressed) {
-                    direction = "up";
-                } else if (keyHandler.downPressed) {
-                    direction = "down";
-                } else if (keyHandler.leftPressed) {
-                    direction = "left";
-                } else if (keyHandler.rightPressed) {
-                    direction = "right";
-                }
+                if (!keyHandler.enterPressed) {
+                    if (keyHandler.upPressed) {
+                        direction = "up";
+                    } else if (keyHandler.downPressed) {
+                        direction = "down";
+                    } else if (keyHandler.leftPressed) {
+                        direction = "left";
+                    } else if (keyHandler.rightPressed) {
+                        direction = "right";
+                    }
 
-                isMoving = true;
+                    isMoving = true;
+                }
 
                 // Check tile collision
                 hasCollided = false;

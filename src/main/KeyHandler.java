@@ -27,6 +27,26 @@ public class KeyHandler implements KeyListener {
             enterPressed = true;
         }
 
+        if (gamePanel.gameState == GameState.TITLE_STATE) {
+            if (keyCode == KeyEvent.VK_W) {
+                gamePanel.ui.currentTitleScreenSelectionIndex--;
+            }
+
+            if (keyCode == KeyEvent.VK_S) {
+                gamePanel.ui.currentTitleScreenSelectionIndex++;
+            }
+
+            if (keyCode == KeyEvent.VK_ENTER) {
+                if (gamePanel.ui.currentTitleScreenSelectionIndex == 0) {
+                    gamePanel.gameState = GameState.PLAY;
+                }
+
+                if (gamePanel.ui.currentTitleScreenSelectionIndex == 2) {
+                    System.exit(0);
+                }
+            }
+        }
+
         if (gamePanel.gameState == GameState.PLAY) {
             if (keyCode == KeyEvent.VK_W) {
                 upPressed = true;
@@ -53,7 +73,7 @@ public class KeyHandler implements KeyListener {
             }
         } else if (gamePanel.gameState == GameState.DIALOG) {
             if (keyCode == KeyEvent.VK_ENTER) {
-                gamePanel.gameState = GameState.PLAY;
+                    gamePanel.gameState = GameState.PLAY;
             }
         }
     }

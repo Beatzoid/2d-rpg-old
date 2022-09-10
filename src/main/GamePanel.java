@@ -55,12 +55,12 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void setup() {
+        gameState = GameState.TITLE_STATE;
+
         assetManager.setupObjects();
         assetManager.setupNPCs();
 
         playMusic(Sounds.MAIN_THEME);
-
-        gameState = GameState.PLAY;
     }
 
     /**
@@ -127,23 +127,30 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D) g;
 
-        tileManager.draw(g2);
+        if (gameState == GameState.TITLE_STATE) {
+            // Draw the tiles for a dynamic and
+            // more interesting title screen
+            tileManager.draw(g2);
+            ui.draw(g2);
+        } else {
+            tileManager.draw(g2);
 
-        for (GameObject obj : objects) {
-            if (obj != null) {
-                obj.draw(g2, this);
+            for (GameObject obj : objects) {
+                if (obj != null) {
+                    obj.draw(g2, this);
+                }
             }
-        }
 
-        for (Entity npc : npcs) {
-            if (npc != null) {
-                npc.draw(g2);
+            for (Entity npc : npcs) {
+                if (npc != null) {
+                    npc.draw(g2);
+                }
             }
+
+            player.draw(g2);
+
+            ui.draw(g2);
         }
-
-        player.draw(g2);
-
-        ui.draw(g2);
 
         g2.dispose();
     }
